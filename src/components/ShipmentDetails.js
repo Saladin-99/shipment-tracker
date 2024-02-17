@@ -39,6 +39,7 @@ function ShippingDetails({ shippingData }) {
     return acc;
   }, -1);
 
+  
  // Function to map states to text messages
   const mapStateToMessage = event => {
     switch (event.state) {
@@ -52,6 +53,12 @@ function ShippingDetails({ shippingData }) {
         return 'Your package is out for delivery';
       case 'CANCELLED':
         return 'Your order has been cancelled';
+      case 'DELIVERED':
+        return 'Your order has been delivered';
+      case 'NOT_YET_SHIPPED':
+        return 'Your order will be shipped soon';
+      case 'WAITING_FOR_CUSTOMER_ACTION':
+        return event.reason ? `Order not delivered: ${event.reason}` : "Order not delivered";
       default:
         return event.state;
     }
@@ -59,26 +66,32 @@ function ShippingDetails({ shippingData }) {
 
   return (
     <div className="ShippingDetails">
+      {/* Order # */}
+      <div className="OrderNumber section">
+        <p>Order #{TrackingNumber}</p>
+      </div>
+  
       {/* Important details */}
-      <div className="ImportantDetails">
-        <p>Order Tracking Number: {TrackingNumber}</p>
-        <p>Current Status: {mapStateToMessage(CurrentStatus)}</p>
+      <div className="ImportantDetails section">
+        <p>{mapStateToMessage(CurrentStatus)}</p>
         <p>Merchant Name: {provider}</p>
         <p>Expected Arrival Date: {new Date(PromisedDate).toLocaleDateString()}</p>
         <p>Got a problem with your shipment? <span onClick={handleSupportPhoneNumberClick} style={{ cursor: 'pointer', textDecoration: 'underline' }}>Support Phone Numbers</span></p>
       </div>
-
+  
       {/* Progress bar */}
-      <ProgressBar stages={stages} currentStage={currentStage} transitEvents={TransitEvents} />
-
+      <div className="ProgressBar section">
+        <ProgressBar stages={stages} currentStage={currentStage} transitEvents={TransitEvents} currentStatus={CurrentStatus}/>
+      </div>
+  
       {/* Shipment Details */}
-      <div className="ShipmentDetails">
-      <h2>Shipment Details</h2>
-        {Object.entries(eventsByDay).map(([date, events]) => (
+      <div className="ShipmentDetails section">
+        <h2>Shipment Details</h2>
+        {Object.entries(eventsByDay).reverse().map(([date, events]) => (
           <div key={date} className="DayEvents">
             <h3>{date}</h3>
             <ul>
-              {events.map((event, index) => (
+              {events.reverse().map((event, index) => (
                 <li key={index}>
                   <span>{mapStateToMessage(event)}</span>
                   <span>{new Date(event.timestamp).toLocaleTimeString()}</span>
@@ -90,6 +103,7 @@ function ShippingDetails({ shippingData }) {
       </div>
     </div>
   );
+  
 }
 
 export default ShippingDetails;
