@@ -3,8 +3,10 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import ShippingDetails from '../components/ShipmentDetails';
+import { useLanguage } from '../components/LanguageContext';
 
 function DefaultPage() {
+  const { language } = useLanguage();
   const [searchValue, setSearchValue] = useState('');
   const [shippingData, setShippingData] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
@@ -36,7 +38,7 @@ function DefaultPage() {
   };
 
   return (
-    <div className="DefaultPage">
+    <div dir={language === 'ar' ? 'rtl' : 'ltr'} className="DefaultPage">
       <Header />
       <SearchBar onSearch={handleSearch} />
       {errorMessage && <div className="ErrorMessage">{errorMessage}</div>}

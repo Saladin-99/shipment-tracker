@@ -1,8 +1,12 @@
-// SearchBar.js
 import React, { useState } from 'react';
+import { useLanguage } from './LanguageContext';
+import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
 
 function SearchBar({ onSearch }) {
   const [searchValue, setSearchValue] = useState('');
+  const { translate } = useLanguage();
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
@@ -15,14 +19,19 @@ function SearchBar({ onSearch }) {
 
   return (
     <div className="SearchBar">
-      <form onSubmit={handleSearchSubmit}>
-        <input
+      <form onSubmit={handleSearchSubmit} style={{ display: 'flex', alignItems: 'center' }}>
+        <TextField
           type="text"
-          placeholder="Enter shipping number"
+          placeholder={translate('Enter shipping number')}
           value={searchValue}
           onChange={handleSearchChange}
+          variant="outlined"
+          fullWidth
+          sx={{ marginRight: '8px' }}
         />
-        <button type="submit">Search</button>
+        <IconButton type="submit" aria-label="search">
+          <SearchIcon />
+        </IconButton>
       </form>
     </div>
   );

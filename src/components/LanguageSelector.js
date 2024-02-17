@@ -1,19 +1,28 @@
-// LanguageSelector.js
 import React from 'react';
 import { useLanguage } from './LanguageContext';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 
-function LanguageSelector() {
-  const { language, changeLanguage } = useLanguage();
+function LanguageSelector({onClick}) {
+  const { changeLanguage } = useLanguage();
+  const settings = [
+    { key: 'en', label: 'English' },
+    { key: 'ar', label: 'العربية' }
+  ];
 
   const handleLanguageChange = (newLanguage) => {
     changeLanguage(newLanguage);
+    onClick();
   };
 
   return (
-    <div className="LanguageSelector">
-      <button onClick={() => handleLanguageChange('ar')}>Arabic</button>
-      <button onClick={() => handleLanguageChange('en')}>English</button>
-    </div>
+    <>
+      {settings.map(({ key, label }) => (
+        <MenuItem key={key} onClick={() => handleLanguageChange(key)}>
+          <Typography textAlign="center">{label}</Typography>
+        </MenuItem>
+      ))}
+    </>
   );
 }
 

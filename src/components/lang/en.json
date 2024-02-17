@@ -1,1 +1,24 @@
-{}
+{
+    "اللغة":"Language",
+    "تتبع شحنتك":"Track Your Shipment",
+    "برجاء ادخال رقم الشحن":"Enter shipping number",
+    "رقم خدمة العملاء": "Support Phone Numbers",
+    "لقد تلقينا طلبكم": "We have received your order",
+    "تم استلام الطرد من البائع": "Package Received from Seller",
+    "الطرد الخاص بك في الطريق": "Your package is on the move",
+    "الطرد الخاص بك خارج للتوصيل": "Your package is out for delivery",
+    "تم إلغاء طلبك": "Your order has been cancelled",
+    "تم تسليم طلبك بنجاح": "Your order has been delivered successfully",
+    "سيتم شحن طلبك قريبًا": "Your order will be shipped soon",
+    "الطلب لم يتم تسليمه": "Order not delivered",
+    "اسم التاجر": "Merchant Name",
+    "تاريخ الوصول المتوقع": "Expected Arrival Date",
+    "هل لديك مشكلة في شحنتك؟": "Got a problem with your shipment?",
+    "احصل علي الدعم": "Get Support",
+    "تلقينا طلبك": "Ticket Created",
+    "استلمنا الطرد": "Package Received",
+    "خارج للتوصيل": "Out for Delivery",
+    "تم التوصيل": "Delivered",
+    "طلب":"Order",
+    "تفاصيل الشحنة":"Shipment Details"
+}

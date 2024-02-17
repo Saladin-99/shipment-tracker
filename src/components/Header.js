@@ -2,19 +2,60 @@
 import React from 'react';
 import LanguageSelector from './LanguageSelector';
 import { useLanguage } from './LanguageContext';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
+import Menu from '@mui/material/Menu';
 
 function Header() {
-  const { language } = useLanguage();
+  const { translate } = useLanguage();
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
   return (
-    <div className="Header">
-      <div className="HeaderText">
-        {language === 'ar' ? 'نص عنوان' : 'Header Text'}
-      </div>
-      <div className="LanguageSelectorContainer">
-        <LanguageSelector />
-      </div>
-    </div>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 700, }}>
+          {translate("Track Your Shipment")}
+          </Typography>
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Change language">
+            <Typography onClick={handleOpenUserMenu} variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 500, }}>
+          {translate("Language")}
+          </Typography>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              <LanguageSelector onClick={handleCloseUserMenu} />
+            </Menu>
+          </Box>
+        </Toolbar>
+    </AppBar>
+  </Box>
+
   );
 }
 
