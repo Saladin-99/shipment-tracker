@@ -1,5 +1,6 @@
 // ShippingDetails.js
 import React from 'react';
+import ProgressBar from './ProgressBar';
 
 function ShippingDetails({ shippingData }) {
   if (!shippingData) {
@@ -20,7 +21,15 @@ function ShippingDetails({ shippingData }) {
     { state: 'OUT_FOR_DELIVERY', label: 'Out for Delivery' },
     { state: 'DELIVERED', label: 'Delivered' }
   ];
-
+  // Group transit events by day
+  const eventsByDay = {};
+  TransitEvents.forEach(event => {
+    const date = new Date(event.timestamp).toLocaleDateString();
+    if (!eventsByDay[date]) {
+      eventsByDay[date] = [];
+    }
+    eventsByDay[date].push(event);
+  });
   // Find the current stage based on the transit events
   const currentStage = TransitEvents.reduce((acc, event) => {
     const stageIndex = stages.findIndex(stage => stage.state === event.state);
@@ -30,10 +39,22 @@ function ShippingDetails({ shippingData }) {
     return acc;
   }, -1);
 
-  // Helper function to get the timestamp for a specific state
-  const getTimestamp = (state) => {
-    const event = TransitEvents.find(event => event.state === state);
-    return event ? new Date(event.timestamp).toLocaleString() : '';
+ // Function to map states to text messages
+  const mapStateToMessage = event => {
+    switch (event.state) {
+      case 'TICKET_CREATED':
+        return 'We have received your order';
+      case 'PACKAGE_RECEIVED':
+        return event.hub ? `Package Received at ${event.hub}` : 'Package Received from Seller';
+      case 'IN_TRANSIT':
+        return 'Your package is on the move';
+      case 'OUT_FOR_DELIVERY':
+        return 'Your package is out for delivery';
+      case 'CANCELLED':
+        return 'Your order has been cancelled';
+      default:
+        return event.state;
+    }
   };
 
   return (
@@ -41,18 +62,29 @@ function ShippingDetails({ shippingData }) {
       {/* Important details */}
       <div className="ImportantDetails">
         <p>Order Tracking Number: {TrackingNumber}</p>
-        <p>Current Status: {CurrentStatus.state}</p>
+        <p>Current Status: {mapStateToMessage(CurrentStatus)}</p>
         <p>Merchant Name: {provider}</p>
         <p>Expected Arrival Date: {new Date(PromisedDate).toLocaleDateString()}</p>
         <p>Got a problem with your shipment? <span onClick={handleSupportPhoneNumberClick} style={{ cursor: 'pointer', textDecoration: 'underline' }}>Support Phone Numbers</span></p>
       </div>
 
       {/* Progress bar */}
-      <div className="ProgressBar">
-        {stages.map((stage, index) => (
-          <div key={index} className={`ProgressStage ${index <= currentStage ? 'Achieved' : ''}`}>
-            <span className="StageLabel">{stage.label}</span>
-            {index <= currentStage && <span className="Timestamp">{getTimestamp(stage.state)}</span>}
+      <ProgressBar stages={stages} currentStage={currentStage} transitEvents={TransitEvents} />
+
+      {/* Shipment Details */}
+      <div className="ShipmentDetails">
+      <h2>Shipment Details</h2>
+        {Object.entries(eventsByDay).map(([date, events]) => (
+          <div key={date} className="DayEvents">
+            <h3>{date}</h3>
+            <ul>
+              {events.map((event, index) => (
+                <li key={index}>
+                  <span>{mapStateToMessage(event)}</span>
+                  <span>{new Date(event.timestamp).toLocaleTimeString()}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>
