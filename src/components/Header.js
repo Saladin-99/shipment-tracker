@@ -1,4 +1,3 @@
-// Header.js
 import React from 'react';
 import LanguageSelector from './LanguageSelector';
 import { useLanguage } from './LanguageContext';
@@ -20,18 +19,19 @@ function Header() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" elevation={4} style={{ background: '#fff', color: '#000', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}>
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 700, }}>
-          {translate("Track Your Shipment")}
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 700 }}>
+            {translate("Track Your Shipment")}
           </Typography>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Change language">
-            <Typography onClick={handleOpenUserMenu} variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 500, }}>
-          {translate("Language")}
-          </Typography>
+              <Typography onClick={handleOpenUserMenu} variant="h6" component="div" sx={{ fontWeight: 500, cursor: 'pointer' }}>
+                {translate("Language")}
+              </Typography>
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}
@@ -53,9 +53,8 @@ function Header() {
             </Menu>
           </Box>
         </Toolbar>
-    </AppBar>
-  </Box>
-
+      </AppBar>
+    </Box>
   );
 }
 
