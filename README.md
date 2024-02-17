@@ -1,4 +1,4 @@
-hosted on: https://shipment-tracker-h4ss82agz-saladin-projects.vercel.app/
+hosted on: https://shipment-tracker-omega.vercel.app/
 
 # Getting Started with Create React App
 
